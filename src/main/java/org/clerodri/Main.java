@@ -82,9 +82,7 @@ public class Main {
                         System.out.printf("Deposity successefully: your new Balance is: %s\n",amount);
                         break;
                     case "2":
-                        System.out.println("\n");
-                        System.out.println("\t\nCurrent Balance: \n");
-                        System.out.println("\t\nCryptoCurrencies: \n");
+                        market.showWalletBalance(user);
                         break;
                     case "3":
                         System.out.println("\n");

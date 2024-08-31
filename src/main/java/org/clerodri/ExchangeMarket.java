@@ -45,5 +45,9 @@ public class ExchangeMarket {
         System.out.println("Deposit Succesfully");
         System.out.println("\tUpdated Balance: "+user.getWallet().toString());
     }
+    public void showWalletBalance(ExchangeUser user){
+        String message = "Financial status: \n" + user.getWallet().toString();
+        System.out.print(message);
+    }
 
 }
