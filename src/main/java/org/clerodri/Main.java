@@ -3,12 +3,14 @@ package org.clerodri;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         Menu();
     }
 
 
     private static void Menu() {
+        ExchangeMarket market = new ExchangeMarket();
         try (Scanner scanner = new Scanner(System.in)) {
             String option;
             do {
@@ -24,8 +26,8 @@ public class Main {
                         String userMail = scanner.nextLine();
                         System.out.println("Enter your new Password:");
                         String userPassword = scanner.nextLine();
-                        //create user by an services
-                        System.out.printf("Usuario: %s - created successfully\n", userName);
+                        //create user by a services
+                        market.register(userName,userMail,userPassword);
                         break;
                     case "2":
                         System.out.print("Logging Successfully\n");
