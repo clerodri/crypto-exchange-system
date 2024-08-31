@@ -5,14 +5,14 @@ import org.clerodri.entity.ExchangeUser;
 import java.util.Scanner;
 
 public class Main {
-
+    static ExchangeMarket market = new ExchangeMarket();
     public static void main(String[] args) {
         Menu();
     }
 
 
     private static void Menu() {
-        ExchangeMarket market = new ExchangeMarket();
+       // ExchangeMarket market = new ExchangeMarket();
         try (Scanner scanner = new Scanner(System.in)) {
             String option;
             String email;
@@ -43,7 +43,7 @@ public class Main {
                             System.out.println("Credentials Incorrect or User not registered, try again");
                         }else{
                             System.out.print("Logging Successfully\n");
-                            HomeMenu(scanner);
+                            HomeMenu(scanner,user);
                         }
 
                         break;
@@ -64,10 +64,10 @@ public class Main {
 
 
 
-    private static void HomeMenu(Scanner scanner){
+    private static void HomeMenu(Scanner scanner, ExchangeUser user){
             String optionHome;
             String type="";
-            String amount="";
+            Integer amount;
             do {
                 LabelHome();
                 System.out.println("\n Enter an option:");
@@ -76,8 +76,9 @@ public class Main {
                 switch (optionHome) {
                     case "1":
                         System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        amount = scanner.nextInt();
                         // LOGIC FOR UPDATE YOUR WALLET
+                        market.deposit(user,amount);
                         System.out.printf("Deposity successefully: your new Balance is: %s\n",amount);
                         break;
                     case "2":
@@ -90,7 +91,7 @@ public class Main {
                         System.out.println("Enter an type:");
                         type = scanner.nextLine();
                         System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        amount = scanner.nextInt();
                         //CHECK ENOUGH FUNDS
                         System.out.println("\t\n Transaction Executed Successfully \n");
                         break;
@@ -99,7 +100,7 @@ public class Main {
                         System.out.println("Enter an type:");
                         type = scanner.nextLine();
                         System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        amount = scanner.nextInt();
                         System.out.println("Enter max price acceptable:");
                         String maxPrice = scanner.nextLine();
                         //add logic of place buy order
@@ -109,7 +110,7 @@ public class Main {
                         System.out.println("Enter an type:");
                         type = scanner.nextLine();
                         System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        amount = scanner.nextInt();
                         System.out.println("Enter min price acceptable:");
                         String minPrice = scanner.nextLine();
                         //add logic place sell order

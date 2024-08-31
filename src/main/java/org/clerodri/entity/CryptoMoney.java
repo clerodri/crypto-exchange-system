@@ -1,22 +1,14 @@
 package org.clerodri.entity;
 
-public class Crypto {
-    private String name;
+import org.clerodri.CryptoEnum;
+
+public class CryptoMoney {
     private Integer quantity;
     private Integer value;
 
-    public Crypto(String name, Integer quantity, Integer value) {
-        this.name = name;
+    public CryptoMoney( Integer quantity, Integer value) {
         this.quantity = quantity;
         this.value = value;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getQuantity() {

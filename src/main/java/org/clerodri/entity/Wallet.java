@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Wallet {
     private Integer balance ;
-    private List<Crypto> cryptos;
+    private List<CryptoMoney> cryptos;
 
-    public Wallet(Integer balance) {
-        this.balance = balance;
+    public Wallet() {
+        this.balance = 0;
         this.cryptos = new ArrayList<>();
     }
 
@@ -20,19 +20,18 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public List<Crypto> getCryptos() {
+    public List<CryptoMoney> getCryptos() {
         return cryptos;
     }
 
-    public void setCryptos(List<Crypto> cryptos) {
+    public void setCryptos(List<CryptoMoney> cryptos) {
         this.cryptos = cryptos;
     }
 
     @Override
     public String toString() {
-        return "Wallet{" +
-                "balance=" + balance +
-                ", crytos=" + cryptos +
-                '}';
+        return  "\n" +
+                "\t\tBalance: " + balance + "\n"+
+                "\t\tCryptos:" + cryptos + "\n";
     }
 }

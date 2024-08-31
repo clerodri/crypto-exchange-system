@@ -1,6 +1,8 @@
 package org.clerodri.entity;
 
-public class ExchangeUser extends  User{
+import org.clerodri.service.Market;
+
+public class ExchangeUser extends  User implements Market {
 
     private String uniqueId;
     private Wallet  wallet;
@@ -29,9 +31,14 @@ public class ExchangeUser extends  User{
 
     @Override
     public String toString() {
-        return "ExchangeUser{" +
-                "uniqueId='" + uniqueId + '\'' +
-                ", wallet=" + wallet +
-                '}';
+        return
+                "\tUniqueId: " + uniqueId + "\n"+
+                "\tWallet: " + wallet.toString()+"\n";
+    }
+
+    @Override
+    public void deposit(Integer amount) {
+        Integer oldAmount = this.wallet.getBalance();
+        this.wallet.setBalance(oldAmount + amount);
     }
 }
