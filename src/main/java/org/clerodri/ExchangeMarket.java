@@ -4,11 +4,13 @@ import org.clerodri.entity.ExchangeUser;
 import org.clerodri.entity.Wallet;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ExchangeMarket {
-    private static Set<ExchangeUser> users = new HashSet<>();
+    private static final Set<ExchangeUser> users = new HashSet<>();
 
 
     public void register(String name,String email, String password ){
@@ -20,6 +22,11 @@ public class ExchangeMarket {
         System.out.println(exchangeUser);
     }
 
+    public ExchangeUser login(String email, String password){
+        List<ExchangeUser> checkUser = users.stream().filter(user -> user.getEmail().equals(email) && user.getPassword().equals(password)).toList();
+        if(checkUser.isEmpty()) return null;
+        return checkUser.get(0);
+    }
 
 
 

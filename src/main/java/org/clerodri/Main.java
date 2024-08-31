@@ -1,5 +1,7 @@
 package org.clerodri;
 
+import org.clerodri.entity.ExchangeUser;
+
 import java.util.Scanner;
 
 public class Main {
@@ -13,6 +15,8 @@ public class Main {
         ExchangeMarket market = new ExchangeMarket();
         try (Scanner scanner = new Scanner(System.in)) {
             String option;
+            String email;
+            String password;
             do {
                 LabelMenu();
                 System.out.println("Enter option:");
@@ -23,15 +27,25 @@ public class Main {
                         System.out.println("Enter your name:");
                         String userName = scanner.nextLine();
                         System.out.println("Enter your email:");
-                        String userMail = scanner.nextLine();
+                        email = scanner.nextLine();
                         System.out.println("Enter your new Password:");
-                        String userPassword = scanner.nextLine();
+                        password = scanner.nextLine();
                         //create user by a services
-                        market.register(userName,userMail,userPassword);
+                        market.register(userName,email,password);
                         break;
                     case "2":
-                        System.out.print("Logging Successfully\n");
-                        HomeMenu(scanner);
+                        System.out.println("Enter your email:");
+                        email = scanner.nextLine();
+                        System.out.println("Enter your new Password:");
+                        password = scanner.nextLine();
+                        ExchangeUser user = market.login(email,password);
+                        if(user==null) {
+                            System.out.println("Credentials Incorrect or User not registered, try again");
+                        }else{
+                            System.out.print("Logging Successfully\n");
+                            HomeMenu(scanner);
+                        }
+
                         break;
                     case "3":
                         System.out.println("Program finished, thanks.");
