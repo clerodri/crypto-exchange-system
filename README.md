@@ -1,9 +1,13 @@
 
-# Crypto Exchange System
+# GLOBANT JAVA  BOOTCAMP
+#  - Crypto Exchange System
 
 ## Overview
 
-The Crypto Exchange System is a Java-based application designed as a final project to simulate the functionalities of a cryptocurrency exchange platform. Users can create accounts, manage digital wallets, deposit fiat money, and trade cryptocurrencies such as Bitcoin (BTC) and Ethereum (ETH). The system ensures secure and efficient trading by matching buy and sell orders.
+The Crypto Exchange System is a Java-based application designed as a final project to simulate 
+the functionalities of a cryptocurrency exchange platform. 
+Users can create accounts, manage digital wallets, deposit fiat money, buy and sell of cryptocurrencies such as 
+Bitcoin (BTC) and Ethereum (ETH). The system ensures secure and efficient by matching buy and sell orders.
 
 ## Features
 

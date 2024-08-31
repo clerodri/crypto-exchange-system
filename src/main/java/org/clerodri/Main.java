@@ -8,7 +8,6 @@ public class Main {
     }
 
 
-
     private static void Menu() {
         try (Scanner scanner = new Scanner(System.in)) {
             String option;
@@ -50,9 +49,7 @@ public class Main {
 
 
     private static void HomeMenu(Scanner scanner){
-
             String optionHome;
-
             String type="";
             String amount="";
             do {
@@ -113,9 +110,6 @@ public class Main {
                 }
             }
             while (!optionHome.equals("7"));
-
-
-
 
     }
 
