@@ -24,19 +24,19 @@ public class Main {
                 scanner.nextLine();
                 switch (option) {
                     case "1":
-                        System.out.println("Enter your name:");
+                        System.out.println("\nEnter your name:");
                         String userName = scanner.nextLine();
                         System.out.println("Enter your email:");
                         email = scanner.nextLine();
-                        System.out.println("Enter your new Password:");
+                        System.out.println("Enter your new password:");
                         password = scanner.nextLine();
                         //create user by a services
                         market.register(userName,email,password);
                         break;
                     case "2":
-                        System.out.println("Enter your email:");
+                        System.out.println("\nEnter your email:");
                         email = scanner.nextLine();
-                        System.out.println("Enter your new Password:");
+                        System.out.println("Enter your password:");
                         password = scanner.nextLine();
                         ExchangeUser user = market.login(email,password);
                         if(user==null) {
@@ -67,10 +67,10 @@ public class Main {
     private static void HomeMenu(Scanner scanner, ExchangeUser user){
             String optionHome;
             String type="";
-            Integer amount;
+            double amount;
             do {
                 LabelHome();
-                System.out.println("\n Enter an option:");
+                System.out.println("\nEnter an option:");
                 optionHome = scanner.next();
                 scanner.nextLine();
                 switch (optionHome) {
@@ -78,20 +78,22 @@ public class Main {
                         System.out.println("Enter an amount:");
                         amount = scanner.nextInt();
                         // LOGIC FOR UPDATE YOUR WALLET
-                        market.deposit(user,amount);
+                        market.deposit(user, (int) amount);
                         System.out.printf("Deposity successefully: your new Balance is: %s\n",amount);
                         break;
                     case "2":
                         market.showWalletBalance(user);
                         break;
                     case "3":
+                          // Shows bitcoins del exchange
+                        labelCryptoExchange();
                         System.out.println("\n");
-                        System.out.println("Enter an type:");
+                        System.out.println("Choose an option:");
                         type = scanner.nextLine();
                         System.out.println("Enter an amount:");
-                        amount = scanner.nextInt();
+                        amount = scanner.nextDouble();
                         //CHECK ENOUGH FUNDS
-                        System.out.println("\t\n Transaction Executed Successfully \n");
+                        market.buyCryptocurrencies(user, amount,type);
                         break;
                     case "4":
                         System.out.println("\n");
@@ -107,8 +109,8 @@ public class Main {
                         System.out.println("\n");
                         System.out.println("Enter an type:");
                         type = scanner.nextLine();
-                        System.out.println("Enter an amount:");
-                        amount = scanner.nextInt();
+                        System.out.println("Enter an quantity:");
+                        amount = scanner.nextDouble();
                         System.out.println("Enter min price acceptable:");
                         String minPrice = scanner.nextLine();
                         //add logic place sell order
@@ -128,7 +130,12 @@ public class Main {
 
     }
 
-
+    private static void labelCryptoExchange(){
+        System.out.println("Current CryptosMoney Available");
+        market.showCryptosMarket();
+        System.out.println("1. BITCOIN");
+        System.out.println("2. ETHEREUM");
+    }
 
     private static void LabelMenu(){
         System.out.println("\n#####   Crypto Exchange System   #####\n");

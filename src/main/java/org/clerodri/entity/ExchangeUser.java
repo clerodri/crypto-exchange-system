@@ -41,4 +41,12 @@ public class ExchangeUser extends  User implements Market {
         Integer oldAmount = this.wallet.getBalance();
         this.wallet.setBalance(oldAmount + amount);
     }
+
+    @Override
+    public void buyCrypto(int totalCost, double quantity,CryptoType type) {
+        Integer oldBalance = this.wallet.getBalance();
+        this.wallet.setBalance(oldBalance - totalCost);
+        this.wallet.getCryptos().put(quantity, type);
+
+    }
 }

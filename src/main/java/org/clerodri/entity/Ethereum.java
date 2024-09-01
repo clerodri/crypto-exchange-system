@@ -1,7 +1,6 @@
 package org.clerodri.entity;
 
 import org.clerodri.service.Crypto;
-import org.clerodri.CryptoEnum;
 
 public class Ethereum extends CryptoMoney implements Crypto {
 
@@ -10,14 +9,17 @@ public class Ethereum extends CryptoMoney implements Crypto {
         super(quantity, value);
     }
 
-    @Override
-    public CryptoEnum getType() {
-        return CryptoEnum.ETH;
-    }
 
     @Override
-    public void updateQuantity(Integer quantity) {
-        Integer qty = this.getQuantity();
-        this.setQuantity(qty - quantity);
+    public void updateQuantity(double quantity) {
+        double qty = super.getQuantity();
+        super.setQuantity(qty - quantity);
+    }
+
+
+
+    @Override
+    public String showDetails() {
+        return "ETHEREUM : [ Quantity: "+ this.getQuantity() + "\t Price: $" + this.getValue()+" ]";
     }
 }

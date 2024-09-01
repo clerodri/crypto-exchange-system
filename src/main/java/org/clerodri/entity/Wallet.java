@@ -1,15 +1,22 @@
 package org.clerodri.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Wallet {
     private Integer balance ;
-    private List<CryptoMoney> cryptos;
+
+    private Map cryptos ;
 
     public Wallet() {
         this.balance = 0;
-        this.cryptos = new ArrayList<>();
+        this.cryptos = new HashMap();
+    }
+
+    public Map getCryptos() {
+        return cryptos;
     }
 
     public Integer getBalance() {
@@ -20,18 +27,14 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public List<CryptoMoney> getCryptos() {
-        return cryptos;
-    }
-
-    public void setCryptos(List<CryptoMoney> cryptos) {
-        this.cryptos = cryptos;
-    }
 
     @Override
     public String toString() {
         return  "\n" +
-                "\t\tBalance: " + balance + "\n"+
-                "\t\tCryptos:" + cryptos + "\n";
+                "\tBalance: " + balance + "\n"+
+                "\tCryptos:" + cryptos + "\n";
     }
+
+
 }
+

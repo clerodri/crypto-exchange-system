@@ -1,5 +1,6 @@
 package org.clerodri;
 
+import org.clerodri.entity.CryptoType;
 import org.clerodri.entity.ExchangeUser;
 import org.clerodri.entity.Wallet;
 import org.clerodri.service.Crypto;
@@ -10,6 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ExchangeMarket {
+
     private static final Set<ExchangeUser> users = new HashSet<>();
     CryptoFactory btcFactory = new BitcoinFactory();
     CryptoFactory etcFactory = new EthereumFactory();
@@ -34,20 +36,57 @@ public class ExchangeMarket {
         return checkUser.get(0);
     }
 
-    public void  updateAmountCrypto(CryptoEnum type,Integer quantity){
-        if (type == BTC.getType()) BTC.updateQuantity(quantity);
-        if (type == ETH.getType()) ETH.updateQuantity(quantity);
 
-    }
 
     public void deposit(ExchangeUser user, Integer amount){
         user.deposit(amount);
         System.out.println("Deposit Succesfully");
         System.out.println("\tUpdated Balance: "+user.getWallet().toString());
     }
+
     public void showWalletBalance(ExchangeUser user){
-        String message = "Financial status: \n" + user.getWallet().toString();
+        String message = "\nFinancial status: " + user.getWallet().toString();
         System.out.print(message);
     }
 
+    private boolean checkFunds(ExchangeUser user,  int totalCost){
+        return user.getWallet().getBalance() >= totalCost;
+    }
+
+    public void buyCryptocurrencies(ExchangeUser user, double amount, String type){
+        int totalCost;
+        switch (type){
+            case "1":
+               totalCost = (int)(amount * BTC.getValue());
+
+                if(checkFunds(user,totalCost)){
+                    //update crypto exchange and user exchange
+                    BTC.updateQuantity(amount);
+                    user.buyCrypto(totalCost,amount, CryptoType.BTC);
+                    System.out.println("\tTransaction executed Successfully");
+                }else{
+                    System.out.println("\nNo founds available");
+                }
+                break;
+            case "2":
+                totalCost = (int)(amount * ETH.getValue());
+                if(checkFunds(user,totalCost)){
+                    // update crypto exchange and user exchange
+                    ETH.updateQuantity(amount);
+                    user.buyCrypto(totalCost,amount, CryptoType.ETH);
+                    System.out.println("\nTransaction executed Successfully");
+                }else{
+                    System.out.println("\tNo founds Available");
+                }
+                break;
+            default:
+                System.out.println("Invalid option");
+        }
+
+    }
+
+    public void showCryptosMarket(){
+        System.out.println(BTC.showDetails());
+        System.out.println(ETH.showDetails());
+    }
 }
