@@ -103,9 +103,9 @@ public class ExchangeMarket {
                 if (hasFunds){
                     buyOrder = new Order(CryptoType.BTC,quantity,price, ActionOrder.BUY, user.getUniqueId());
                     orderBooks.add(buyOrder);
-                    
+                    checkOrder();
                 }else{
-                    System.out.println("insufficient balance for buy Bitcoin");
+                    System.out.println("insufficient balance for your buy order");
                 }
 
                 break;
@@ -115,7 +115,7 @@ public class ExchangeMarket {
                     buyOrder = new Order(CryptoType.ETH,quantity,price, ActionOrder.BUY,user.getUniqueId());
                     orderBooks.add(buyOrder);
                 }else{
-                    System.out.println("insufficient balance for buy ethereum");
+                    System.out.println("insufficient balance for your buy order");
                 }
 
                 break;
@@ -123,6 +123,11 @@ public class ExchangeMarket {
                 System.out.println("Invalid option");
         }
     }
+
+    private void checkOrder(ActionOrder actionOrder, int price, double quantity) {
+
+    }
+
     public void placeSellOrder(String type, double quantity, int price, ExchangeUser user ){
         Order sellOrder;
         boolean hasCrypto;
