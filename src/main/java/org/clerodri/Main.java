@@ -1,13 +1,19 @@
 package org.clerodri;
 
-import org.clerodri.entity.ExchangeUser;
+import org.clerodri.user.ExchangeUser;
+import org.clerodri.user.Wallet;
 
 import java.util.Scanner;
 
 public class Main {
     static ExchangeMarket market = new ExchangeMarket();
     public static void main(String[] args) {
-        Menu();
+        //Menu();
+        Scanner scanner = new Scanner(System.in);
+        Wallet wallet = new Wallet();
+
+        ExchangeUser user1= new ExchangeUser("a","a","a","a",wallet);
+        HomeMenu(scanner,user1);
     }
 
 
@@ -68,6 +74,7 @@ public class Main {
             String optionHome;
             String type="";
             double amount;
+            int price;
             do {
                 LabelHome();
                 System.out.println("\nEnter an option:");
@@ -96,23 +103,28 @@ public class Main {
                         market.buyCryptocurrencies(user, amount,type);
                         break;
                     case "4":
-                        System.out.println("\n");
-                        System.out.println("Enter an type:");
+                        System.out.println("##########   PLACE BUY ORDER   #########");
+                        System.out.println("1. BITCOIN");
+                        System.out.println("2. ETHEREUM");
+                        System.out.println("Choose an option:");
                         type = scanner.nextLine();
-                        System.out.println("Enter an amount:");
-                        amount = scanner.nextInt();
+                        System.out.println("Enter an quantity:");
+                        amount = scanner.nextDouble();
                         System.out.println("Enter max price acceptable:");
-                        String maxPrice = scanner.nextLine();
+                        price = scanner.nextInt();
                         //add logic of place buy order
+                        market.placeBuyOrder(type,amount,price,user);
                         break;
                     case "5":
-                        System.out.println("\n");
-                        System.out.println("Enter an type:");
+                        System.out.println("##########   PLACE SELL ORDER   #########");
+                        System.out.println("1. BITCOIN");
+                        System.out.println("2. ETHEREUM");
+                        System.out.println("Choose an option:");
                         type = scanner.nextLine();
                         System.out.println("Enter an quantity:");
                         amount = scanner.nextDouble();
                         System.out.println("Enter min price acceptable:");
-                        String minPrice = scanner.nextLine();
+                        price = scanner.nextInt();
                         //add logic place sell order
                         break;
                     case "6":
@@ -137,12 +149,7 @@ public class Main {
         System.out.println("2. ETHEREUM");
     }
 
-    private static void LabelMenu(){
-        System.out.println("\n#####   Crypto Exchange System   #####\n");
-        System.out.println("1. Register");
-        System.out.println("2. Login");
-        System.out.println("3. Exit:");
-    }
+
     private static void LabelHome(){
         System.out.println("\n#####   Home   #####");
         System.out.println("1. Deposit Money");
@@ -152,5 +159,14 @@ public class Main {
         System.out.println("5. Place Sell Order");
         System.out.println("6. View Transaction History");
         System.out.println("7. Logout");
+    }
+
+
+
+    private static void LabelMenu(){
+        System.out.println("\n#####   Crypto Exchange System   #####\n");
+        System.out.println("1. Register");
+        System.out.println("2. Login");
+        System.out.println("3. Exit:");
     }
 }

@@ -1,4 +1,4 @@
-package org.clerodri.entity;
+package org.clerodri.crypto;
 
 public class CryptoMoney {
     private double quantity;
@@ -17,7 +17,7 @@ public class CryptoMoney {
         this.quantity = quantity;
     }
 
-    public Integer getValue() {
+    public Integer getCryptoPriceExchange() {
         return value;
     }
 

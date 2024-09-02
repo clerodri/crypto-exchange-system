@@ -1,18 +1,23 @@
 package org.clerodri;
 
-import org.clerodri.entity.CryptoType;
-import org.clerodri.entity.ExchangeUser;
-import org.clerodri.entity.Wallet;
+import org.clerodri.crypto.CryptoType;
+import org.clerodri.order.ActionOrder;
+import org.clerodri.order.Transaction;
+import org.clerodri.user.ExchangeUser;
+import org.clerodri.order.Order;
+import org.clerodri.user.Wallet;
+import org.clerodri.factory.BitcoinFactory;
+import org.clerodri.factory.CryptoFactory;
+import org.clerodri.factory.EthereumFactory;
 import org.clerodri.service.Crypto;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ExchangeMarket {
 
-    private static final Set<ExchangeUser> users = new HashSet<>();
+    Set<ExchangeUser> users = new HashSet<>();
+    List<Order> orderBooks = new ArrayList<>();
+    List<Transaction> transactions = new ArrayList<>();
     CryptoFactory btcFactory = new BitcoinFactory();
     CryptoFactory etcFactory = new EthereumFactory();
 
@@ -37,9 +42,8 @@ public class ExchangeMarket {
     }
 
 
-
     public void deposit(ExchangeUser user, Integer amount){
-        user.deposit(amount);
+        user.depositFitMoney(amount);
         System.out.println("Deposit Succesfully");
         System.out.println("\tUpdated Balance: "+user.getWallet().toString());
     }
@@ -57,23 +61,23 @@ public class ExchangeMarket {
         int totalCost;
         switch (type){
             case "1":
-               totalCost = (int)(amount * BTC.getValue());
+               totalCost = (int)(amount * BTC.getCryptoPriceExchange());
 
                 if(checkFunds(user,totalCost)){
                     //update crypto exchange and user exchange
-                    BTC.updateQuantity(amount);
-                    user.buyCrypto(totalCost,amount, CryptoType.BTC);
+                    BTC.updateCryptoQuantity(amount);
+                    user.buyCryptoFromExchange(totalCost,amount, CryptoType.BTC);
                     System.out.println("\tTransaction executed Successfully");
                 }else{
                     System.out.println("\nNo founds available");
                 }
                 break;
             case "2":
-                totalCost = (int)(amount * ETH.getValue());
+                totalCost = (int)(amount * ETH.getCryptoPriceExchange());
                 if(checkFunds(user,totalCost)){
                     // update crypto exchange and user exchange
-                    ETH.updateQuantity(amount);
-                    user.buyCrypto(totalCost,amount, CryptoType.ETH);
+                    ETH.updateCryptoQuantity(amount);
+                    user.buyCryptoFromExchange(totalCost,amount, CryptoType.ETH);
                     System.out.println("\nTransaction executed Successfully");
                 }else{
                     System.out.println("\tNo founds Available");
@@ -86,7 +90,65 @@ public class ExchangeMarket {
     }
 
     public void showCryptosMarket(){
-        System.out.println(BTC.showDetails());
-        System.out.println(ETH.showDetails());
+        System.out.println(BTC.displayCryptoDetails());
+        System.out.println(ETH.displayCryptoDetails());
+    }
+
+    public void placeBuyOrder(String type, double quantity, int price, ExchangeUser user ){
+        Order buyOrder;
+        boolean hasFunds;
+        switch (type){
+            case "1":
+                hasFunds = user.validateBalance(price);
+                if (hasFunds){
+                    buyOrder = new Order(CryptoType.BTC,quantity,price, ActionOrder.BUY, user.getUniqueId());
+                    orderBooks.add(buyOrder);
+                    
+                }else{
+                    System.out.println("insufficient balance for buy Bitcoin");
+                }
+
+                break;
+            case "2":
+                hasFunds =user.validateBalance(price);
+                if (hasFunds){
+                    buyOrder = new Order(CryptoType.ETH,quantity,price, ActionOrder.BUY,user.getUniqueId());
+                    orderBooks.add(buyOrder);
+                }else{
+                    System.out.println("insufficient balance for buy ethereum");
+                }
+
+                break;
+            default:
+                System.out.println("Invalid option");
+        }
+    }
+    public void placeSellOrder(String type, double quantity, int price, ExchangeUser user ){
+        Order sellOrder;
+        boolean hasCrypto;
+        switch (type){
+            case "1":
+                hasCrypto = user.validateCryptoQuantity(quantity,CryptoType.BTC);
+                if (hasCrypto) {
+                    sellOrder = new Order(CryptoType.BTC,quantity,price, ActionOrder.SELL,user.getUniqueId());
+                    orderBooks.add(sellOrder);
+                }else{
+                    System.out.println("Bitcoins no available in your balance.");
+                }
+
+                break;
+            case "2":
+                hasCrypto = user.validateCryptoQuantity(quantity,CryptoType.ETH);
+                if (hasCrypto) {
+                    sellOrder = new Order(CryptoType.ETH,quantity,price, ActionOrder.SELL,user.getUniqueId());
+                    orderBooks.add(sellOrder);
+                }else{
+                    System.out.println("Ethereum no available in your balance.");
+                }
+
+                break;
+            default:
+                System.out.println("Invalid option");
+        }
     }
 }

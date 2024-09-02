@@ -1,8 +1,10 @@
 package org.clerodri.service;
 
-import org.clerodri.entity.CryptoType;
+import org.clerodri.crypto.CryptoType;
 
 public interface Market {
-    void deposit(Integer amount);
-    void buyCrypto(int totalCost, double quantity, CryptoType type);
+    void depositFitMoney(Integer amount);
+    void buyCryptoFromExchange(int totalCost, double quantity, CryptoType type);
+    boolean validateCryptoQuantity(double quantity, CryptoType type);
+    boolean validateBalance(int amount);
 }

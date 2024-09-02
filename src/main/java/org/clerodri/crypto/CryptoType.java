@@ -1,4 +1,4 @@
-package org.clerodri.entity;
+package org.clerodri.crypto;
 
 public enum CryptoType {
     BTC,

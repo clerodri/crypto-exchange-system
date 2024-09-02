@@ -1,8 +1,8 @@
-package org.clerodri;
+package org.clerodri.factory;
 
 import org.clerodri.service.Crypto;
 
 public abstract class CryptoFactory {
 
-     abstract Crypto createCrypto();
+     public abstract Crypto createCrypto();
 }

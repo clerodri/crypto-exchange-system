@@ -1,21 +1,21 @@
-package org.clerodri.entity;
+package org.clerodri.user;
 
-import java.util.ArrayList;
+import org.clerodri.crypto.CryptoType;
+import org.clerodri.service.Crypto;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Wallet {
     private Integer balance ;
-
-    private Map cryptos ;
+    private HashMap<CryptoType, Double> cryptos ;
 
     public Wallet() {
         this.balance = 0;
-        this.cryptos = new HashMap();
+        this.cryptos = new HashMap<>();
     }
 
-    public Map getCryptos() {
+    public HashMap<CryptoType, Double> getCryptos() {
         return cryptos;
     }
 

@@ -1,12 +1,12 @@
 package org.clerodri.service;
 
 public interface Crypto {
-//    Integer getValue();
-//    CryptoEnum getType();
-//    Integer  getQuantity();
-    void updateQuantity(double quantity);
 
-    String showDetails();
+    void updateCryptoQuantity(double quantity);
 
-    Integer getValue();
+    String displayCryptoDetails();
+
+    Integer getCryptoPriceExchange();
+
+
 }

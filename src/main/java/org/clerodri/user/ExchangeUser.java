@@ -1,5 +1,6 @@
-package org.clerodri.entity;
+package org.clerodri.user;
 
+import org.clerodri.crypto.CryptoType;
 import org.clerodri.service.Market;
 
 public class ExchangeUser extends  User implements Market {
@@ -37,16 +38,27 @@ public class ExchangeUser extends  User implements Market {
     }
 
     @Override
-    public void deposit(Integer amount) {
+    public void depositFitMoney(Integer amount) {
         Integer oldAmount = this.wallet.getBalance();
         this.wallet.setBalance(oldAmount + amount);
     }
 
     @Override
-    public void buyCrypto(int totalCost, double quantity,CryptoType type) {
+    public void buyCryptoFromExchange(int totalCost, double quantity, CryptoType type) {
         Integer oldBalance = this.wallet.getBalance();
         this.wallet.setBalance(oldBalance - totalCost);
-        this.wallet.getCryptos().put(quantity, type);
+        this.wallet.getCryptos().put(type, quantity);
 
+    }
+
+    @Override
+    public boolean validateCryptoQuantity(double quantity,CryptoType type) {
+        double value =  this.wallet.getCryptos().get(type);
+        return value >= quantity;
+    }
+
+    @Override
+    public boolean validateBalance(int amount) {
+        return this.getWallet().getBalance()>=amount;
     }
 }

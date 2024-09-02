@@ -1,4 +1,4 @@
-package org.clerodri.entity;
+package org.clerodri.crypto;
 
 import org.clerodri.service.Crypto;
 
@@ -11,15 +11,15 @@ public class Bitcoin extends  CryptoMoney implements Crypto {
 
 
     @Override
-    public void updateQuantity(double quantity) {
+    public void updateCryptoQuantity(double quantity) {
             double qty = this.getQuantity();
             this.setQuantity(qty - quantity);
     }
 
     @Override
-    public String showDetails() {
+    public String displayCryptoDetails() {
 
-        return "BITCOIN  : [ Quantity: "+ this.getQuantity() + "\t Price: $" + this.getValue()+" ]";
+        return "BITCOIN  : [ Quantity: "+ this.getQuantity() + "\t Price: $" + this.getCryptoPriceExchange()+" ]";
     }
 
 }
