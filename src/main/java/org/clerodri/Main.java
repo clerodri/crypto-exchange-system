@@ -9,11 +9,7 @@ public class Main {
     static ExchangeMarket market = new ExchangeMarket();
     public static void main(String[] args) {
         Menu();
-//        Scanner scanner = new Scanner(System.in);
-//        Wallet wallet = new Wallet();
-//
-//        ExchangeUser user1= new ExchangeUser("a","a","a","a",wallet);
-//        HomeMenu(scanner,user1);
+
     }
 
 

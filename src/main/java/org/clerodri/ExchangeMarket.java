@@ -7,10 +7,8 @@ import org.clerodri.order.Transaction;
 import org.clerodri.user.ExchangeUser;
 import org.clerodri.order.Order;
 import org.clerodri.user.Wallet;
-
-
 import java.util.*;
-import java.util.stream.Stream;
+
 
 public class ExchangeMarket {
     Map<String, ExchangeUser> users = new HashMap<>();
@@ -167,14 +165,11 @@ public class ExchangeMarket {
                 .toList();
     }
     private CryptoType getCryptoTypeFromString(String type) {
-        switch (type) {
-            case "1":
-                return CryptoType.BTC;
-            case "2":
-                return CryptoType.ETH;
-            default:
-                return null;
-        }
+        return switch (type) {
+            case "1" -> CryptoType.BTC;
+            case "2" -> CryptoType.ETH;
+            default -> null;
+        };
     }
 
 }

@@ -1,10 +1,9 @@
 package org.clerodri.user;
 
 import org.clerodri.crypto.CryptoType;
-import org.clerodri.service.Crypto;
+
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Wallet {
     private Integer balance ;

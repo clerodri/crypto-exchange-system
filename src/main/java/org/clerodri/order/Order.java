@@ -34,26 +34,19 @@ public class Order {
         return type;
     }
 
-//    public double getQuantity() {
-//        return quantity;
-//    }
-//
-//    public int getPrice() {
-//        return price;
-//    }
+
 
     public ActionOrder getAction() {
         return action;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Order{" +
-//                "type=" + type +
-//                ", quantity=" + quantity +
-//                ", price=" + price +
-//                ", action=" + action +
-//                ", trader=" + traderId +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "Order{" +
+                "type=" + type +
+                ", cryptoMoney=" + cryptoMoney +
+                ", action=" + action +
+                ", traderId='" + traderId + '\'' +
+                '}';
+    }
 }

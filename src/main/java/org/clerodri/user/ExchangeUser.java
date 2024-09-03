@@ -19,17 +19,11 @@ public class ExchangeUser extends  User implements Market {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
 
     public Wallet getWallet() {
         return wallet;
     }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
-    }
 
     @Override
     public String toString() {
@@ -66,7 +60,6 @@ public class ExchangeUser extends  User implements Market {
     @Override
     public void updateCryptoAndBalance(double quantity, int balance, CryptoType type, ActionOrder action) {
         if(action == ActionOrder.BUY){
-            //double qty = this.getWallet().getCryptos().get(type);
             if(this.getWallet().getCryptos().get(type)==null){
                 int oldBalance = this.getWallet().getBalance();
                 this.getWallet().getCryptos().put(type, quantity);
