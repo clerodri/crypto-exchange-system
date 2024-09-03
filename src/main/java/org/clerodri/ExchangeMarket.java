@@ -93,103 +93,87 @@ public class ExchangeMarket {
     }
 
     public void placeBuyOrder(String type, double quantity, int price, ExchangeUser user ){
-        Order buyOrder;
-        boolean hasFunds;
-        switch (type){
-            case "1":
-                hasFunds = user.validateBalance(price);
-                if (hasFunds){
-                    buyOrder = new Order(CryptoType.BTC, quantity,price, ActionOrder.BUY, user.getUniqueId());
-                    orderBooks.add(buyOrder);
-                    List<Order> ordersFiltered = orderBooks.stream().filter(order -> !order.getAction().equals(ActionOrder.BUY) && order.getType().equals(CryptoType.BTC) ).toList();
-                    List<Order> findAnMatch= findPlaceOrder(ordersFiltered,buyOrder);
-                    executePlaceOrder(findAnMatch, buyOrder,user,CryptoType.BTC);
-                }else{
-                    System.out.println("insufficient founds for place buy order, check your balance");
-                }
-                break;
-            case "2":
-                hasFunds =user.validateBalance(price);
-                if (hasFunds){
-                    buyOrder = new Order(CryptoType.ETH,quantity,price, ActionOrder.BUY,user.getUniqueId());
-                    orderBooks.add(buyOrder);
-
-                }else{
-                    System.out.println("insufficient founds for place buy order, check your balance");
-                }
-
-                break;
-            default:
-                System.out.println("Invalid option");
+        CryptoType cryptoType = getCryptoTypeFromString(type);
+        if (cryptoType == null) {
+            System.out.println("Invalid option");
+            return;
         }
+        if (!user.validateBalance(price)) {
+            System.out.println("Insufficient funds to place buy order, check your balance");
+            return;
+        }
+        Order buyOrder = new Order(cryptoType, quantity, price, ActionOrder.BUY, user.getUniqueId());
+        orderBooks.add(buyOrder);
+        List<Order> matchingOrders = findMatchingSellOrders(cryptoType);
+        List<Order> findOrder = findPlaceOrder(matchingOrders,buyOrder);
+        executePlaceOrder(findOrder, buyOrder, user, cryptoType);
     }
 
     public void placeSellOrder(String type, double quantity, int price, ExchangeUser user ){
-        Order sellOrder;
-        boolean hasCrypto;
-        switch (type){
-            case "1":
-                hasCrypto = user.validateCryptoQuantity(quantity,CryptoType.BTC);
-                if (hasCrypto) {
-                    sellOrder = new Order(CryptoType.BTC,quantity,price, ActionOrder.SELL,user.getUniqueId());
-                    orderBooks.add(sellOrder);
-                    List<Order> ordersFiltered = orderBooks.stream().filter(order -> !order.getAction().equals(ActionOrder.SELL) && order.getType().equals(CryptoType.BTC) ).toList();
-                    List<Order> findAnMatch= findPlaceOrder(ordersFiltered,sellOrder);
-                    executePlaceOrder(findAnMatch, sellOrder,user,CryptoType.BTC);
-                }else{
-                    System.out.println("insufficient crypto money for place sell order, check your cryptos");
-                }
+        CryptoType cryptoType = getCryptoTypeFromString(type);
+        if (cryptoType == null) {
+            System.out.println("Invalid option");
+            return;
+        }
+        if (!user.validateBalance(price)) {
+            System.out.println("Insufficient funds to place buy order, check your balance");
+            return;
+        }
+        Order sellOrder = new Order(cryptoType, quantity, price, ActionOrder.SELL, user.getUniqueId());
+        orderBooks.add(sellOrder);
+        List<Order> matchingOrders = findMatchingBuyOrders(cryptoType);
+        List<Order> findOrder = findPlaceOrder(matchingOrders,sellOrder);
+        executePlaceOrder(findOrder, sellOrder, user, cryptoType);
+    }
 
-                break;
-            case "2":
-                hasCrypto = user.validateCryptoQuantity(quantity,CryptoType.ETH);
-                if (hasCrypto) {
-                    sellOrder = new Order(CryptoType.ETH,quantity,price, ActionOrder.SELL,user.getUniqueId());
-                    orderBooks.add(sellOrder);
-                }else{
-                    System.out.println("insufficient crypto money for place sell order, check your cryptos");
-                }
 
-                break;
-            default:
-                System.out.println("Invalid option");
+    private void executePlaceOrder(List<Order> order, Order myOrder, ExchangeUser user, CryptoType type){
+        if (order.isEmpty()) return;
+        if(myOrder.getAction() == ActionOrder.BUY){
+            Order orderSeller = order.get(0);
+            ExchangeUser seller = users.get(orderSeller.getTraderId());
+            user.updateCryptoAndBalance(orderSeller.getCryptoMoney().getQuantity(),orderSeller.getCryptoMoney().getValue(),type,ActionOrder.BUY);
+            seller.updateCryptoAndBalance(orderSeller.getCryptoMoney().getQuantity(),orderSeller.getCryptoMoney().getValue(),type,ActionOrder.SELL);
+
+        }
+        if(myOrder.getAction() == ActionOrder.SELL){
+            Order orderBuyer = order.get(0);
+            ExchangeUser buyer = users.get(orderBuyer.getTraderId());
+            user.updateCryptoAndBalance(orderBuyer.getCryptoMoney().getQuantity(),orderBuyer.getCryptoMoney().getValue(),type,ActionOrder.SELL);
+            buyer.updateCryptoAndBalance(orderBuyer.getCryptoMoney().getQuantity(),orderBuyer.getCryptoMoney().getValue(),type,ActionOrder.BUY);
         }
     }
-    //
+
     private List<Order> findPlaceOrder(List<Order> orderFilters, Order myOrder){
         List<Order> newList;
         if (myOrder.getAction() == ActionOrder.BUY) {
-             newList= orderFilters.stream().filter((order) -> myOrder.getCryptoMoney().compareTo(order.getCryptoMoney()) > 0).toList();
+            newList= orderFilters.stream().filter((order) -> myOrder.getCryptoMoney().compareTo(order.getCryptoMoney()) > 0).toList();
 
         } else {
             newList= orderFilters.stream().filter((order) -> myOrder.getCryptoMoney().compareTypeSeller(order.getCryptoMoney()) > 0).toList();        //CASE MY ORDER IS TYPE SELLER
         }
-        System.out.println("LISTA CHEQUEADAS: "+newList);
-    return newList;
+        return newList;
     }
 
-    private void executePlaceOrder(List<Order> order, Order myOrder, ExchangeUser user, CryptoType type){
-        System.out.println("entro execute place");
-        if (order.isEmpty()) return;
 
-        if(myOrder.getAction() == ActionOrder.BUY){
-            Order orderSeller = order.get(0);
-            ExchangeUser seller = users.get(orderSeller.getTraderId());
-            System.out.println("entro 2");
-            user.updateCryptoAndBalance(orderSeller.getCryptoMoney().getQuantity(),orderSeller.getCryptoMoney().getValue(),type,ActionOrder.BUY);
-            System.out.println("entro 3");
-            seller.updateCryptoAndBalance(orderSeller.getCryptoMoney().getQuantity(),orderSeller.getCryptoMoney().getValue(),type,ActionOrder.SELL);
-            System.out.println("entro 4");
-        }
-        if(myOrder.getAction() == ActionOrder.SELL){
-            System.out.println("entro 5");
-            Order orderBuyer = order.get(0);
-            System.out.println("entro 6");
-            ExchangeUser buyer = users.get(orderBuyer.getTraderId());
-            System.out.println("entro 7");
-            user.updateCryptoAndBalance(orderBuyer.getCryptoMoney().getQuantity(),orderBuyer.getCryptoMoney().getValue(),type,ActionOrder.SELL);
-            System.out.println("entro 8");
-            buyer.updateCryptoAndBalance(orderBuyer.getCryptoMoney().getQuantity(),orderBuyer.getCryptoMoney().getValue(),type,ActionOrder.BUY);
+    private List<Order> findMatchingSellOrders(CryptoType cryptoType) {
+        return orderBooks.stream()
+                .filter(order -> order.getType().equals(cryptoType) && order.getAction().equals(ActionOrder.SELL))
+                .toList();
+    }
+    private List<Order> findMatchingBuyOrders(CryptoType cryptoType) {
+        return orderBooks.stream()
+                .filter(order -> order.getType().equals(cryptoType) && order.getAction().equals(ActionOrder.BUY))
+                .toList();
+    }
+    private CryptoType getCryptoTypeFromString(String type) {
+        switch (type) {
+            case "1":
+                return CryptoType.BTC;
+            case "2":
+                return CryptoType.ETH;
+            default:
+                return null;
         }
     }
 
