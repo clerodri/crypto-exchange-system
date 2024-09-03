@@ -142,6 +142,9 @@ public class ExchangeMarket {
             ExchangeUser seller = users.get(orderSeller.getTraderId());
             user.updateCryptoAndBalance(orderSeller.getCryptoMoney().getQuantity(),orderSeller.getCryptoMoney().getValue(),type,ActionOrder.BUY);
             seller.updateCryptoAndBalance(orderSeller.getCryptoMoney().getQuantity(),orderSeller.getCryptoMoney().getValue(),type,ActionOrder.SELL);
+            Transaction myTransaction = new Transaction(myOrder,user.getUniqueId(),orderSeller.getTraderId());
+            transactions.add(myTransaction);
+
 
         }
         if(myOrder.getAction() == ActionOrder.SELL){
@@ -149,6 +152,8 @@ public class ExchangeMarket {
             ExchangeUser buyer = users.get(orderBuyer.getTraderId());
             user.updateCryptoAndBalance(orderBuyer.getCryptoMoney().getQuantity(),orderBuyer.getCryptoMoney().getValue(),type,ActionOrder.SELL);
             buyer.updateCryptoAndBalance(orderBuyer.getCryptoMoney().getQuantity(),orderBuyer.getCryptoMoney().getValue(),type,ActionOrder.BUY);
+            Transaction myTransaction = new Transaction(myOrder,orderBuyer.getTraderId(),user.getUniqueId());
+            transactions.add(myTransaction);
         }
     }
 
