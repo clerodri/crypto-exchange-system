@@ -124,6 +124,16 @@ public class ExchangeMarket {
         executePlaceOrder(findOrder, sellOrder, user, cryptoType);
     }
 
+    private List<Order> findPlaceOrder(List<Order> orderFilters, Order myOrder){
+        List<Order> newList;
+        if (myOrder.getAction() == ActionOrder.BUY) {
+            newList= orderFilters.stream().filter((order) -> myOrder.getCryptoMoney().compareTo(order.getCryptoMoney()) > 0).toList();
+
+        } else {
+            newList= orderFilters.stream().filter((order) -> myOrder.getCryptoMoney().compareTypeSeller(order.getCryptoMoney()) > 0).toList();        //CASE MY ORDER IS TYPE SELLER
+        }
+        return newList;
+    }
 
     private void executePlaceOrder(List<Order> order, Order myOrder, ExchangeUser user, CryptoType type){
         if (order.isEmpty()) return;
@@ -142,15 +152,13 @@ public class ExchangeMarket {
         }
     }
 
-    private List<Order> findPlaceOrder(List<Order> orderFilters, Order myOrder){
-        List<Order> newList;
-        if (myOrder.getAction() == ActionOrder.BUY) {
-            newList= orderFilters.stream().filter((order) -> myOrder.getCryptoMoney().compareTo(order.getCryptoMoney()) > 0).toList();
 
-        } else {
-            newList= orderFilters.stream().filter((order) -> myOrder.getCryptoMoney().compareTypeSeller(order.getCryptoMoney()) > 0).toList();        //CASE MY ORDER IS TYPE SELLER
-        }
-        return newList;
+    public void showTransactions(String uniqueId){
+        transactions.forEach( transaction -> {
+            if(transaction.getTraderId().equals(uniqueId)){
+                System.out.println(transaction);
+            }
+        });
     }
 
 
