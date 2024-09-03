@@ -77,6 +77,7 @@ public class Main {
                 scanner.nextLine();
                 switch (optionHome) {
                     case "1":
+                        System.out.println("##########   CHECK BALANCE   #########");
                         System.out.println("Enter an amount:");
                         amount = scanner.nextInt();
                         // LOGIC FOR UPDATE YOUR WALLET
@@ -88,6 +89,7 @@ public class Main {
                         break;
                     case "3":
                           // Shows bitcoins del exchange
+                        System.out.println("##########   BUY CRYPTO MONEYS   #########");
                         labelCryptoExchange();
                         System.out.println("\n");
                         System.out.println("Choose an option:");
@@ -125,13 +127,12 @@ public class Main {
 
                         break;
                     case "6":
-                        System.out.println("List of transactions:");
-                        System.out.println("\t*****");
-                        System.out.println("\t*****");
+                        System.out.println("########### List of transactions ##########");
                         //SHOW ALL YOUR TRX FROM TRANSACTIONS LIST
+                        market.showTransactions(user.getUniqueId());
                         break;
                     case "7":
-                        System.out.println("Logging out Successfully:\n");
+                        System.out.println("Logout Successfully:\n");
                         break;
                 }
             }
