@@ -1,6 +1,7 @@
 package org.clerodri.user;
 
 import org.clerodri.crypto.CryptoType;
+import org.clerodri.order.ActionOrder;
 import org.clerodri.service.Market;
 
 public class ExchangeUser extends  User implements Market {
@@ -60,5 +61,31 @@ public class ExchangeUser extends  User implements Market {
     @Override
     public boolean validateBalance(int amount) {
         return this.getWallet().getBalance()>=amount;
+    }
+
+    @Override
+    public void updateCryptoAndBalance(double quantity, int balance, CryptoType type, ActionOrder action) {
+        if(action == ActionOrder.BUY){
+            //double qty = this.getWallet().getCryptos().get(type);
+            if(this.getWallet().getCryptos().get(type)==null){
+                int oldBalance = this.getWallet().getBalance();
+                this.getWallet().getCryptos().put(type, quantity);
+                this.getWallet().setBalance(oldBalance - balance);
+            }else{
+                double qty = this.getWallet().getCryptos().get(type);
+                int oldBalance = this.getWallet().getBalance();
+                this.getWallet().getCryptos().replace(type,qty + quantity);
+                this.getWallet().getCryptos().replace(type,qty + quantity);
+                this.getWallet().setBalance(oldBalance - balance);
+            }
+
+        }
+        if(action == ActionOrder.SELL){
+            double qty = this.getWallet().getCryptos().get(type);
+            int oldBalance = this.getWallet().getBalance();
+            this.getWallet().getCryptos().replace(type,qty - quantity);
+            this.getWallet().setBalance(oldBalance + balance);
+        }
+
     }
 }

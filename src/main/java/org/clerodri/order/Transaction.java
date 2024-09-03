@@ -10,7 +10,7 @@ public class Transaction extends Order{
     String seller;
 
     public Transaction(Order order, String buyerId, String sellerId) {
-        super(order.getType(), order.getQuantity(), order.getPrice(), order.getAction());
+        super(order.getType(), order.getCryptoMoney().getQuantity(), order.getCryptoMoney().getValue(), order.getAction());
         this.buyer = buyerId;
         this.seller = sellerId;
     }

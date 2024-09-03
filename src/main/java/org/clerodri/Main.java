@@ -8,17 +8,16 @@ import java.util.Scanner;
 public class Main {
     static ExchangeMarket market = new ExchangeMarket();
     public static void main(String[] args) {
-        //Menu();
-        Scanner scanner = new Scanner(System.in);
-        Wallet wallet = new Wallet();
-
-        ExchangeUser user1= new ExchangeUser("a","a","a","a",wallet);
-        HomeMenu(scanner,user1);
+        Menu();
+//        Scanner scanner = new Scanner(System.in);
+//        Wallet wallet = new Wallet();
+//
+//        ExchangeUser user1= new ExchangeUser("a","a","a","a",wallet);
+//        HomeMenu(scanner,user1);
     }
 
 
     private static void Menu() {
-       // ExchangeMarket market = new ExchangeMarket();
         try (Scanner scanner = new Scanner(System.in)) {
             String option;
             String email;
@@ -126,6 +125,8 @@ public class Main {
                         System.out.println("Enter min price acceptable:");
                         price = scanner.nextInt();
                         //add logic place sell order
+                        market.placeSellOrder(type,amount,price,user);
+
                         break;
                     case "6":
                         System.out.println("List of transactions:");
