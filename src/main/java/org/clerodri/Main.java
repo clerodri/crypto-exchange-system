@@ -1,18 +1,19 @@
 package org.clerodri;
 
-import org.clerodri.entity.ExchangeUser;
+import org.clerodri.user.ExchangeUser;
+import org.clerodri.user.Wallet;
 
 import java.util.Scanner;
 
 public class Main {
-
+    static ExchangeMarket market = new ExchangeMarket();
     public static void main(String[] args) {
         Menu();
+
     }
 
 
     private static void Menu() {
-        ExchangeMarket market = new ExchangeMarket();
         try (Scanner scanner = new Scanner(System.in)) {
             String option;
             String email;
@@ -24,26 +25,26 @@ public class Main {
                 scanner.nextLine();
                 switch (option) {
                     case "1":
-                        System.out.println("Enter your name:");
+                        System.out.println("\nEnter your name:");
                         String userName = scanner.nextLine();
                         System.out.println("Enter your email:");
                         email = scanner.nextLine();
-                        System.out.println("Enter your new Password:");
+                        System.out.println("Enter your new password:");
                         password = scanner.nextLine();
                         //create user by a services
                         market.register(userName,email,password);
                         break;
                     case "2":
-                        System.out.println("Enter your email:");
+                        System.out.println("\nEnter your email:");
                         email = scanner.nextLine();
-                        System.out.println("Enter your new Password:");
+                        System.out.println("Enter your password:");
                         password = scanner.nextLine();
                         ExchangeUser user = market.login(email,password);
                         if(user==null) {
                             System.out.println("Credentials Incorrect or User not registered, try again");
                         }else{
                             System.out.print("Logging Successfully\n");
-                            HomeMenu(scanner);
+                            HomeMenu(scanner,user);
                         }
 
                         break;
@@ -64,55 +65,64 @@ public class Main {
 
 
 
-    private static void HomeMenu(Scanner scanner){
+    private static void HomeMenu(Scanner scanner, ExchangeUser user){
             String optionHome;
             String type="";
-            String amount="";
+            double amount;
+            int price;
             do {
                 LabelHome();
-                System.out.println("\n Enter an option:");
+                System.out.println("\nEnter an option:");
                 optionHome = scanner.next();
                 scanner.nextLine();
                 switch (optionHome) {
                     case "1":
                         System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        amount = scanner.nextInt();
                         // LOGIC FOR UPDATE YOUR WALLET
+                        market.deposit(user, (int) amount);
                         System.out.printf("Deposity successefully: your new Balance is: %s\n",amount);
                         break;
                     case "2":
-                        System.out.println("\n");
-                        System.out.println("\t\nCurrent Balance: \n");
-                        System.out.println("\t\nCryptoCurrencies: \n");
+                        market.showWalletBalance(user);
                         break;
                     case "3":
+                          // Shows bitcoins del exchange
+                        labelCryptoExchange();
                         System.out.println("\n");
-                        System.out.println("Enter an type:");
+                        System.out.println("Choose an option:");
                         type = scanner.nextLine();
                         System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        amount = scanner.nextDouble();
                         //CHECK ENOUGH FUNDS
-                        System.out.println("\t\n Transaction Executed Successfully \n");
+                        market.buyCryptocurrencies(user, amount,type);
                         break;
                     case "4":
-                        System.out.println("\n");
-                        System.out.println("Enter an type:");
+                        System.out.println("##########   PLACE BUY ORDER   #########");
+                        System.out.println("1. BITCOIN");
+                        System.out.println("2. ETHEREUM");
+                        System.out.println("Choose an option:");
                         type = scanner.nextLine();
-                        System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        System.out.println("Enter an quantity:");
+                        amount = scanner.nextDouble();
                         System.out.println("Enter max price acceptable:");
-                        String maxPrice = scanner.nextLine();
+                        price = scanner.nextInt();
                         //add logic of place buy order
+                        market.placeBuyOrder(type,amount,price,user);
                         break;
                     case "5":
-                        System.out.println("\n");
-                        System.out.println("Enter an type:");
+                        System.out.println("##########   PLACE SELL ORDER   #########");
+                        System.out.println("1. BITCOIN");
+                        System.out.println("2. ETHEREUM");
+                        System.out.println("Choose an option:");
                         type = scanner.nextLine();
-                        System.out.println("Enter an amount:");
-                        amount = scanner.nextLine();
+                        System.out.println("Enter an quantity:");
+                        amount = scanner.nextDouble();
                         System.out.println("Enter min price acceptable:");
-                        String minPrice = scanner.nextLine();
+                        price = scanner.nextInt();
                         //add logic place sell order
+                        market.placeSellOrder(type,amount,price,user);
+
                         break;
                     case "6":
                         System.out.println("List of transactions:");
@@ -129,14 +139,14 @@ public class Main {
 
     }
 
-
-
-    private static void LabelMenu(){
-        System.out.println("\n#####   Crypto Exchange System   #####\n");
-        System.out.println("1. Register");
-        System.out.println("2. Login");
-        System.out.println("3. Exit:");
+    private static void labelCryptoExchange(){
+        System.out.println("Current CryptosMoney Available");
+        market.showCryptosMarket();
+        System.out.println("1. BITCOIN");
+        System.out.println("2. ETHEREUM");
     }
+
+
     private static void LabelHome(){
         System.out.println("\n#####   Home   #####");
         System.out.println("1. Deposit Money");
@@ -146,5 +156,14 @@ public class Main {
         System.out.println("5. Place Sell Order");
         System.out.println("6. View Transaction History");
         System.out.println("7. Logout");
+    }
+
+
+
+    private static void LabelMenu(){
+        System.out.println("\n#####   Crypto Exchange System   #####\n");
+        System.out.println("1. Register");
+        System.out.println("2. Login");
+        System.out.println("3. Exit:");
     }
 }
