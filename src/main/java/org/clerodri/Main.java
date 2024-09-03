@@ -77,7 +77,7 @@ public class Main {
                 scanner.nextLine();
                 switch (optionHome) {
                     case "1":
-                        System.out.println("##########   CHECK BALANCE   #########");
+                        System.out.println("##########   CHECK BALANCE   ##########");
                         System.out.println("Enter an amount:");
                         amount = scanner.nextInt();
                         // LOGIC FOR UPDATE YOUR WALLET
