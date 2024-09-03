@@ -28,6 +28,9 @@ Bitcoin (BTC) and Ethereum (ETH). The system ensures secure and efficient by mat
 6. **Sell Cryptocurrencies**: Sell cryptocurrencies by placing sell orders.
 7. **View Transaction History**: Review all past trades.
 
+## UML Diagram
+![UML](https://github.com/user-attachments/assets/ee328e54-2424-4081-843e-7000d7496de5)
+
 ## Technical Details
 
 - **Programming Language**: Java
